@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
-import com.example.recyclerviewpeliculas.MovieAPI
+import com.example.recyclerviewpeliculas.CardAPI
 import java.io.Serializable
 import com.example.recyclerviewpeliculas.Card
 
@@ -38,9 +38,7 @@ class DetallesPelicula : AppCompatActivity() {
         val overviewTextView = findViewById<TextView>(R.id.OverviewPelicula)
 
         clickedMovie?.let {
-
-
-            imageView.load(it.imageUrl) {
+            imageView.load(it.cardImages[0].imageUrl) {
                 placeholder(R.drawable.film_placeholder)
             }
         }
