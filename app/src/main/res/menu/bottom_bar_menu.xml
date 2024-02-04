@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="Home"
+        android:id="@+id/homeButton"
+        android:icon="@drawable/yu_gi_oh_"
+        android:enabled="true"
+        />
+    <item
+        android:title="Search Card"
+        android:id="@+id/searchButton"
+        android:enabled="true"
+        android:icon="@drawable/buscar"
+        />
 </menu>

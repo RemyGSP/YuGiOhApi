@@ -24,9 +24,9 @@
         android:layout_height="58dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:autoText="false"
         android:text="Titulo"
         android:textAlignment="center"
+        android:textColor="#000000"
         android:textSize="48sp"
         app:autoSizeMinTextSize="14sp"
         app:autoSizeTextType="uniform"
@@ -41,19 +41,10 @@
         android:layout_marginTop="376dp"
         android:text="TextView"
         android:textAlignment="center"
+        android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="212dp"
-        android:layout_height="82dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginBottom="64dp"
-        android:text="Go Back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
