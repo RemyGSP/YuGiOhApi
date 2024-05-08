@@ -13,4 +13,10 @@
         android:enabled="true"
         android:icon="@drawable/buscar"
         />
+    <item
+        android:title="Favorites"
+        android:id="@+id/favorites"
+        android:enabled="true"
+        android:icon="@drawable/cardback"
+        />
 </menu>

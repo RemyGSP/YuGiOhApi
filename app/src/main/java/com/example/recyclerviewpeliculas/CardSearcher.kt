@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class CardSearcher: AppCompatActivity() {
+    private lateinit var cardDataSource: CardDataSource
+
     private lateinit var cardAdapter: CardAdapter
     val movieApi = CardAPI()
     var counter = 1;
@@ -36,8 +38,11 @@ class CardSearcher: AppCompatActivity() {
                 else -> false
             }
         }
+        cardDataSource = CardDataSource(this)
+        cardDataSource.open()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPeliculas)
-        cardAdapter = CardAdapter(emptyList())
+        cardAdapter = CardAdapter(emptyList(),cardDataSource)
+
         recyclerView.adapter = cardAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
@@ -99,11 +104,8 @@ class CardSearcher: AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPeliculas)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        // Clear the previous adapter and data
         recyclerView.adapter = null
-        // Call the Movie API and update the adapter when the data is received
 
-        // Use the lifecycleScope of the activity to launch the coroutine
         lifecycleScope.launch(Dispatchers.Main) {
             try {
                 val movies: List<Card>? = movieApi.makeApiCall(counter);
@@ -111,7 +113,7 @@ class CardSearcher: AppCompatActivity() {
                 if (movies != null) {
                     // Ensure that the context is not null
                     val context: Context = this@CardSearcher
-                    cardAdapter = CardAdapter(movies)
+                    cardAdapter = CardAdapter(movies,cardDataSource)
                     Log.d("NotAmogus", movies.toString())
                     cardAdapter.addData(movies)
 

@@ -6,13 +6,15 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import java.io.Serializable
 
-class CardAdapter(private val FilmList : List<Card>) : RecyclerView.Adapter<CardAdapter.ViewHolder>() {
+class CardAdapter(private val FilmList : List<Card>,private val cardDataSource: CardDataSource) : RecyclerView.Adapter<CardAdapter.ViewHolder>() {
 
     var allCards: MutableList<Card> = FilmList.toMutableList()
     var filteredCards: MutableList<Card> = allCards;
@@ -40,20 +42,31 @@ class CardAdapter(private val FilmList : List<Card>) : RecyclerView.Adapter<Card
     inner class ViewHolder(var itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView = itemView.findViewById(R.id.cardImage)
         var name: TextView = itemView.findViewById(R.id.cardName)
+        var favoriteButton: Button = itemView.findViewById(R.id.favourites)
         init {
             itemView.setOnClickListener {
                 // Handle item click here
                 val position = adapterPosition
-                    val clickedMovie = filteredCards[position]
+                val clickedMovie = filteredCards[position]
 
-                    val newScreen = Intent(itemView.context, DetallesCarta::class.java)
-                    newScreen.putExtra("clickedMovie", clickedMovie as Serializable)
+                val newScreen = Intent(itemView.context, DetallesCarta::class.java)
+                newScreen.putExtra("clickedMovie", clickedMovie as Serializable)
 
 
-                itemView.context.startActivity(newScreen)
+            }
+            favoriteButton.setOnClickListener {
+                val position = adapterPosition
+                val clickedCard = filteredCards[position]
+                val cardIndex = allCards.indexOf(clickedCard)
+                // Store the index of the clicked card in the database
+                cardDataSource.addFavoriteCard(cardIndex)
+                // Optionally, you can provide feedback to the user that the card was added to favorites
+                Toast.makeText(itemView.context, "Added to favorites", Toast.LENGTH_SHORT).show()
+
 
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

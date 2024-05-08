@@ -19,6 +19,8 @@ import java.io.Serializable
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
+    private lateinit var cardDataSource: CardDataSource
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
@@ -28,6 +30,12 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.searchButton -> {
                     val newScreen = Intent(this, CardSearcher::class.java)
+                    this.startActivity(newScreen)
+                    Log.d("BottomMenu","True");
+                    true
+                }
+                R.id.favorites -> {
+                    val newScreen = Intent(this, FavoritesActivity::class.java)
                     this.startActivity(newScreen)
                     Log.d("BottomMenu","True");
                     true

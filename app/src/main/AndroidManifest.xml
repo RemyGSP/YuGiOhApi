@@ -44,6 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.example.recyclerviewpeliculas.FavoritesActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

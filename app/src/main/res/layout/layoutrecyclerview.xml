@@ -24,5 +24,11 @@
 
         android:textSize="24dp" />
 
+    <Button
+        android:id="@+id/favourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to favourites" />
+
 
 </LinearLayout>
