@@ -6,13 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.size.ViewSizeResolver
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
@@ -25,7 +32,9 @@ class CardSearcher: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val imageView = findViewById<ImageView>(R.id.spinningImage)
+        val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.spin_card)
+        imageView.startAnimation(rotateAnimation)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navBar)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
@@ -42,11 +51,12 @@ class CardSearcher: AppCompatActivity() {
         cardDataSource.open()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPeliculas)
         cardAdapter = CardAdapter(emptyList(),cardDataSource)
-
+        if (cardAdapter.allCards.count() > 0 ){
+            imageView.visibility = View.GONE
+        }
         recyclerView.adapter = cardAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-
-        val searchView = findViewById<SearchView>(R.id.searchBar)
+        val searchView= findViewById<SearchView>(R.id.searchBar)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // Handle search submission (optional)
@@ -77,12 +87,36 @@ class CardSearcher: AppCompatActivity() {
                 }
             }
         })
+
     }
 
     private fun addDataToAdapter(page: Int) {
+
         lifecycleScope.launch(Dispatchers.Main) {
             try {
                 val movies: List<Card>? = movieApi.makeApiCall(counter);
+                val image = findViewById<ImageView>(R.id.spinningImage)
+                image.imageAlpha = 0
+                if (movies != null) {
+                    // Update the existing adapter with new data
+                    cardAdapter.addData(movies)
+                } else {
+                    // Handle the case where movies is null (e.g., API call failed)
+                    Log.e("NotAmogus", "Failed to fetch movies")
+                }
+            } catch (e: Exception) {
+                // Handle exceptions here
+                Log.e("NotAmogus", "Error: ${e.message}")
+            }
+            counter++;
+        }
+    }
+
+    private fun addDataToAdapter(page: Int, image :ImageView) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            try {
+                val movies: List<Card>? = movieApi.makeApiCall(counter);
+
                 // Check for null before updating the adapter
                 if (movies != null) {
                     // Update the existing adapter with new data
@@ -97,6 +131,15 @@ class CardSearcher: AppCompatActivity() {
             }
             counter++;
         }
+    }
+
+
+    suspend fun ChangeVisibility(image: ImageView)
+    {
+        delay(3000)
+        Log.d("NotAmogus", "Setting image visibility to GONE")
+        image.visibility = View.GONE
+        Log.d("NotAmogus", "Image visibility set to: ${image.visibility}")
     }
 
 
@@ -126,6 +169,7 @@ class CardSearcher: AppCompatActivity() {
                 Log.e("NotAmogus", "Error: ${e.message}")
             }
             counter++;
+
         }
 
 

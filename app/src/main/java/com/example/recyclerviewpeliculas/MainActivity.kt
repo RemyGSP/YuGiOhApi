@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
 
+
                 R.id.searchButton -> {
                     val newScreen = Intent(this, CardSearcher::class.java)
                     this.startActivity(newScreen)
